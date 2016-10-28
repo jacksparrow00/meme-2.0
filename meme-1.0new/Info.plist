@@ -18,6 +18,12 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>access photos to create memes</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>access videos and photos to create memes</string>
+	<key>NSCameraUsageDescription</key>
+	<string>use camera to create a meme through new pic</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
