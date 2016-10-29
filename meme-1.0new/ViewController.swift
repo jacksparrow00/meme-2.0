@@ -35,8 +35,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        subscribeToKeyboardNotification()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeToKeyboardNotifications()
+    }
     
     @IBOutlet weak var bottomToolbar: UIToolbar!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -83,5 +88,43 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.view.endEditing(true)
         return true
     }
+    
+    func keyboardWillShow(notification: NSNotification){
+        if view.frame.origin.y == 0 && bottomTextfield.isFirstResponder{
+            self.view.frame.origin.y = getKeyboardHeight(notification: notification) * (-1)
+        }else if topTextfield.isFirstResponder{
+            resetFrame()                //credits:- https://discussions.udacity.com/t/better-way-to-shift-the-view-for-keyboardwillshow-and-keyboardwillhide/36558/6
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification){
+        if bottomTextfield.isFirstResponder{
+            resetFrame()
+        }
+    }
+    
+    func subscribeToKeyboardNotification(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeToKeyboardNotifications(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    func getKeyboardHeight(notification:NSNotification) -> CGFloat{
+        let userInfo=notification.userInfo
+        let keyboardSize=userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
+    }
+    
+    func resetFrame(){
+        if view.frame.origin.y != 0{
+        self.view.frame.origin.y = 0
+        }
+    }
+    
+    func save(){
+        
+    }
 }
-
