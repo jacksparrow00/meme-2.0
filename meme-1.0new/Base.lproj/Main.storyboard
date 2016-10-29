@@ -50,8 +50,16 @@
                             </textField>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNH-Ix-pdb">
                                 <items>
-                                    <barButtonItem title="Share" width="181" id="neX-ZW-Msb"/>
-                                    <barButtonItem title="Cancel" width="166" id="rZX-VL-QcW"/>
+                                    <barButtonItem title="Share" width="181" id="neX-ZW-Msb">
+                                        <connections>
+                                            <action selector="shareAction:" destination="BYZ-38-t0r" id="mw9-yV-ucB"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Cancel" width="166" id="rZX-VL-QcW">
+                                        <connections>
+                                            <action selector="cancelAction:" destination="BYZ-38-t0r" id="Iyi-SB-D6p"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -80,7 +88,9 @@
                         <outlet property="bottomToolbar" destination="m5r-Tp-T0t" id="bUJ-MJ-hHE"/>
                         <outlet property="cameraButton" destination="L5a-T0-aLc" id="bof-Qx-bpf"/>
                         <outlet property="imageView" destination="IFA-B9-WJe" id="KvA-IP-ihP"/>
+                        <outlet property="shareButton" destination="neX-ZW-Msb" id="EOB-8j-cFE"/>
                         <outlet property="topTextfield" destination="z5f-PZ-cma" id="sOS-cr-EMD"/>
+                        <outlet property="topToolbar" destination="WNH-Ix-pdb" id="Rn4-5F-lJ5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

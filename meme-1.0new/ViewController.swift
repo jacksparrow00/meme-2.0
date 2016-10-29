@@ -13,28 +13,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let memeTextAttributes = [
-            NSStrokeColorAttributeName : UIColor.black,
-            NSForegroundColorAttributeName : UIColor.white,
-            NSFontAttributeName : UIFont(name : "HelveticaNeue-CondensedBlack",size: 40)!,
-            NSStrokeWidthAttributeName : -3.0
-        ] as [String : Any]
-        
-        topTextfield.defaultTextAttributes = memeTextAttributes
-        bottomTextfield.defaultTextAttributes = memeTextAttributes
-        
-        self.topTextfield.delegate = self
-        self.bottomTextfield.delegate = self
-        
-        topTextfield.textAlignment = .center
-        bottomTextfield.textAlignment = .center
-        topTextfield.text = "TOP"
-        bottomTextfield.text = "BOTTOM"
+        loadThisView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        
+        if imageView.image != nil{
+            shareButton.isEnabled = true
+        }else{
+            shareButton.isEnabled = false
+        }
         subscribeToKeyboardNotification()
     }
 
@@ -43,12 +33,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         unsubscribeToKeyboardNotifications()
     }
     
+    @IBOutlet weak var topToolbar: UIToolbar!
     @IBOutlet weak var bottomToolbar: UIToolbar!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var bottomTextfield: UITextField!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var topTextfield: UITextField!
     @IBOutlet weak var imageView: UIImageView!
-
+    
     @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate=self
@@ -125,6 +117,66 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func save(){
+        let meme = Meme(topText: topTextfield.text!, bottomText: bottomTextfield.text!, image: imageView.image!, memedImage: generateMemedImage())
+    }
+    
+    func generateMemedImage() -> UIImage{
+        hideToolandNavbar()
         
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        showToolbar()
+        
+        return memedImage
+    }
+    
+    func hideToolandNavbar(){
+        self.topToolbar.isHidden = true
+        self.bottomToolbar.isHidden = true
+    }
+    
+    func showToolbar(){
+        self.topToolbar.isHidden = false
+        self.bottomToolbar.isHidden = false
+    }
+    
+    @IBAction func shareAction(_ sender: AnyObject) {
+        let image = generateMemedImage()
+        let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        self.present(controller, animated: true, completion: nil)
+        controller.completionWithItemsHandler = {
+            activity, success, items, error in
+            if success{
+                self.save()
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        loadThisView()
+    }
+    
+    func loadThisView(){
+        let memeTextAttributes = [
+            NSStrokeColorAttributeName : UIColor.black,
+            NSForegroundColorAttributeName : UIColor.white,
+            NSFontAttributeName : UIFont(name : "HelveticaNeue-CondensedBlack",size: 40)!,
+            NSStrokeWidthAttributeName : -3.0
+            ] as [String : Any]
+        
+        topTextfield.defaultTextAttributes = memeTextAttributes
+        bottomTextfield.defaultTextAttributes = memeTextAttributes
+        imageView.image = nil
+        
+        self.topTextfield.delegate = self
+        self.bottomTextfield.delegate = self
+        
+        topTextfield.textAlignment = .center
+        bottomTextfield.textAlignment = .center
+        topTextfield.text = "TOP"
+        bottomTextfield.text = "BOTTOM"
     }
 }
