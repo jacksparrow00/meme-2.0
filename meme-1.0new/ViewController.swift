@@ -18,9 +18,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)                //find whether the camera is available or not
         
-        if imageView.image != nil{
+        if imageView.image != nil{                                      //enabling and disabling sharing button
             shareButton.isEnabled = true
         }else{
             shareButton.isEnabled = false
@@ -41,13 +41,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var topTextfield: UITextField!
     @IBOutlet weak var imageView: UIImageView!
     
-    @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {
+    @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {                  //image picking from album
         let imagePicker = UIImagePickerController()
         imagePicker.delegate=self
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         self.present(imagePicker, animated: true, completion: nil)
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {         //select image from album
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
             imageView.image = image
             dismiss(animated: true, completion: nil)
@@ -63,25 +63,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             dismiss(animated: true, completion: nil)
         }
     }
-    @IBAction func pickAnImageFromCamera(_ sender: AnyObject) {
+    @IBAction func pickAnImageFromCamera(_ sender: AnyObject) {             //launch the camera and get a picture
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.camera
         present(imagePicker, animated: true, completion: nil)
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {               //removing "top" and "Bottom" when editing
         if textField.text == "TOP" || textField.text == "BOTTOM"{
             textField.text = ""
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {              //keyboard hides when return key entered
         self.view.endEditing(true)
         return true
     }
     
-    func keyboardWillShow(notification: NSNotification){
+    func keyboardWillShow(notification: NSNotification){                    //shift the frame and show keyboard
         if view.frame.origin.y == 0 && bottomTextfield.isFirstResponder{
             self.view.frame.origin.y = getKeyboardHeight(notification: notification) * (-1)
         }else if topTextfield.isFirstResponder{
@@ -89,18 +89,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func keyboardWillHide(notification: NSNotification){
+    func keyboardWillHide(notification: NSNotification){                        //hide the keyboard and reset the frame
         if bottomTextfield.isFirstResponder{
             resetFrame()
         }
     }
     
-    func subscribeToKeyboardNotification(){
+    func subscribeToKeyboardNotification(){                             //subscribe to keyboard notifications
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    func unsubscribeToKeyboardNotifications(){
+    func unsubscribeToKeyboardNotifications(){                          //unsubscribe to keyboard notification
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
@@ -116,7 +116,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    func save(){
+    func save(){                            //save the newly created meme
         let meme = Meme(topText: topTextfield.text!, bottomText: bottomTextfield.text!, image: imageView.image!, memedImage: generateMemedImage())
     }
     
@@ -143,7 +143,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.bottomToolbar.isHidden = false
     }
     
-    @IBAction func shareAction(_ sender: AnyObject) {
+    @IBAction func shareAction(_ sender: AnyObject) {                       //function of share button and saving the meme
         let image = generateMemedImage()
         let controller = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         self.present(controller, animated: true, completion: nil)
@@ -155,7 +155,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
     }
-    @IBAction func cancelAction(_ sender: AnyObject) {
+    @IBAction func cancelAction(_ sender: AnyObject) {                      //function of cancel button
         loadThisView()
     }
     
