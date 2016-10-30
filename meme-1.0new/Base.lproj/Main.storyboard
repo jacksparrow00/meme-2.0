@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,13 +23,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="m5r-Tp-T0t">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem title="Album" width="182" id="BXf-Tg-2GO">
+                                    <barButtonItem title="Album" width="162" id="BXf-Tg-2GO">
                                         <connections>
                                             <action selector="pickAnImageFromAlbum:" destination="BYZ-38-t0r" id="EtX-yJ-vdS"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Camera" width="137" id="L5a-T0-aLc">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="yQG-Oh-AjN"/>
+                                    <barButtonItem title="Camera" width="153" id="L5a-T0-aLc">
                                         <connections>
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="ptU-Cf-aXN"/>
                                         </connections>
@@ -34,28 +39,33 @@
                                 </items>
                             </toolbar>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IFA-B9-WJe">
+                                <rect key="frame" x="0.0" y="54" width="375" height="569"/>
                                 <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="z5f-PZ-cma">
+                                <rect key="frame" x="0.0" y="86" width="375" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qfj-7w-VjN">
+                                <rect key="frame" x="0.0" y="564" width="375" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNH-Ix-pdb">
+                                <rect key="frame" x="0.0" y="10" width="375" height="44"/>
                                 <items>
-                                    <barButtonItem title="Share" width="181" id="neX-ZW-Msb">
+                                    <barButtonItem systemItem="action" id="neX-ZW-Msb">
                                         <connections>
                                             <action selector="shareAction:" destination="BYZ-38-t0r" id="mw9-yV-ucB"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Cancel" width="166" id="rZX-VL-QcW">
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="z8T-ZI-ZbA"/>
+                                    <barButtonItem title="Cancel" width="69" id="rZX-VL-QcW">
                                         <connections>
                                             <action selector="cancelAction:" destination="BYZ-38-t0r" id="Iyi-SB-D6p"/>
                                         </connections>
@@ -69,7 +79,7 @@
                             <constraint firstItem="qfj-7w-VjN" firstAttribute="leading" secondItem="IFA-B9-WJe" secondAttribute="leading" id="JOt-sg-lPr"/>
                             <constraint firstItem="m5r-Tp-T0t" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Jbv-Be-w0H"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WNH-Ix-pdb" secondAttribute="trailing" constant="-16" id="Q90-2Y-baS"/>
-                            <constraint firstItem="WNH-Ix-pdb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="Wnr-lP-Sug"/>
+                            <constraint firstItem="WNH-Ix-pdb" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-10" id="Wnr-lP-Sug"/>
                             <constraint firstItem="qfj-7w-VjN" firstAttribute="trailing" secondItem="IFA-B9-WJe" secondAttribute="trailing" id="bHH-ui-H8n"/>
                             <constraint firstItem="WNH-Ix-pdb" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="g9u-MJ-k98"/>
                             <constraint firstAttribute="trailingMargin" secondItem="IFA-B9-WJe" secondAttribute="trailing" constant="-16" id="iof-iE-EsN"/>
@@ -84,13 +94,13 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomTextfield" destination="qfj-7w-VjN" id="Ire-Fr-nT4"/>
-                        <outlet property="bottomToolbar" destination="m5r-Tp-T0t" id="bUJ-MJ-hHE"/>
-                        <outlet property="cameraButton" destination="L5a-T0-aLc" id="bof-Qx-bpf"/>
-                        <outlet property="imageView" destination="IFA-B9-WJe" id="KvA-IP-ihP"/>
-                        <outlet property="shareButton" destination="neX-ZW-Msb" id="EOB-8j-cFE"/>
-                        <outlet property="topTextfield" destination="z5f-PZ-cma" id="sOS-cr-EMD"/>
-                        <outlet property="topToolbar" destination="WNH-Ix-pdb" id="Rn4-5F-lJ5"/>
+                        <outlet property="bottomTextfield" destination="qfj-7w-VjN" id="5A2-xS-4X0"/>
+                        <outlet property="bottomToolbar" destination="m5r-Tp-T0t" id="Xst-Yb-WrG"/>
+                        <outlet property="cameraButton" destination="L5a-T0-aLc" id="D66-hn-lZY"/>
+                        <outlet property="imageView" destination="IFA-B9-WJe" id="vct-Ry-dlU"/>
+                        <outlet property="shareButton" destination="neX-ZW-Msb" id="jfU-If-5hp"/>
+                        <outlet property="topTextfield" destination="z5f-PZ-cma" id="qcE-lp-Vzo"/>
+                        <outlet property="topToolbar" destination="WNH-Ix-pdb" id="jTp-Nb-cJ6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

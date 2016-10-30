@@ -9,7 +9,16 @@
 import UIKit
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
-
+    
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var bottomToolbar: UIToolbar!
+    @IBOutlet weak var topToolbar: UIToolbar!
+    @IBOutlet weak var bottomTextfield: UITextField!
+    @IBOutlet weak var topTextfield: UITextField!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var imageView: UIImageView!
+    var sourceType:String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -33,24 +42,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         unsubscribeToKeyboardNotifications()
     }
     
-    @IBOutlet weak var topToolbar: UIToolbar!
-    @IBOutlet weak var bottomToolbar: UIToolbar!
-    @IBOutlet weak var cameraButton: UIBarButtonItem!
-    @IBOutlet weak var bottomTextfield: UITextField!
-    @IBOutlet weak var shareButton: UIBarButtonItem!
-    @IBOutlet weak var topTextfield: UITextField!
-    @IBOutlet weak var imageView: UIImageView!
+   
     
     @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {                  //image picking from album
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate=self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        self.present(imagePicker, animated: true, completion: nil)
+       
+       sourceType = "Album"
+        imagePickerMethod(source: sourceType)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {         //select image from album
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
             imageView.image = image
             dismiss(animated: true, completion: nil)
+            
+            
         }
         else{
             let alertController = UIAlertController()
@@ -64,10 +68,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     @IBAction func pickAnImageFromCamera(_ sender: AnyObject) {             //launch the camera and get a picture
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-        present(imagePicker, animated: true, completion: nil)
+        sourceType = "Camera"
+        imagePickerMethod(source: sourceType)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {               //removing "top" and "Bottom" when editing
@@ -111,9 +113,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func resetFrame(){
-        if view.frame.origin.y != 0{
         self.view.frame.origin.y = 0
-        }
     }
     
     func save(){                            //save the newly created meme
@@ -167,16 +167,30 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSStrokeWidthAttributeName : -3.0
             ] as [String : Any]
         
-        topTextfield.defaultTextAttributes = memeTextAttributes
-        bottomTextfield.defaultTextAttributes = memeTextAttributes
         imageView.image = nil
         
-        self.topTextfield.delegate = self
-        self.bottomTextfield.delegate = self
+        func attributeAssign(textfield : UITextField){
+            textfield.delegate = self
+            textfield.defaultTextAttributes = memeTextAttributes
+            textfield.textAlignment = .center
+        }
         
-        topTextfield.textAlignment = .center
-        bottomTextfield.textAlignment = .center
+        attributeAssign(textfield: topTextfield)
+        attributeAssign(textfield: bottomTextfield)
+        
         topTextfield.text = "TOP"
         bottomTextfield.text = "BOTTOM"
+    }
+    
+    func imagePickerMethod(source: String){
+         let imagePicker = UIImagePickerController()
+        imagePicker.delegate=self
+        if sourceType == "Album"{
+            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        }
+        if sourceType == "Camera"{
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+        }
+        self.present(imagePicker, animated: true, completion: nil)
     }
 }
