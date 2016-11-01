@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MemeEditorViewController.swift
 //  meme-1.0new
 //
 //  Created by Nitish on 23/10/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var bottomToolbar: UIToolbar!
@@ -17,12 +17,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var topTextfield: UITextField!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
-    var sourceType:String!
+    var sourceType:UIImagePickerControllerSourceType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        loadThisView()
+        let memeTextAttributes = [
+            NSStrokeColorAttributeName : UIColor.black,
+            NSForegroundColorAttributeName : UIColor.white,
+            NSFontAttributeName : UIFont(name : "HelveticaNeue-CondensedBlack",size: 40)!,
+            NSStrokeWidthAttributeName : -3.0
+            ] as [String : Any]
+        
+        imageView.image = nil
+        
+        func attributeAssign(textfield : UITextField){
+            textfield.delegate = self
+            textfield.defaultTextAttributes = memeTextAttributes
+            textfield.textAlignment = .center
+        }
+        
+        attributeAssign(textfield: topTextfield)
+        attributeAssign(textfield: bottomTextfield)
+        
+        topTextfield.text = "TOP"
+        bottomTextfield.text = "BOTTOM"
+        
+        self.navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,7 +67,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {                  //image picking from album
        
-       sourceType = "Album"
+       sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePickerMethod(source: sourceType)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {         //select image from album
@@ -68,7 +89,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     @IBAction func pickAnImageFromCamera(_ sender: AnyObject) {             //launch the camera and get a picture
-        sourceType = "Camera"
+        sourceType = UIImagePickerControllerSourceType.camera
         imagePickerMethod(source: sourceType)
     }
     
@@ -79,7 +100,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {              //keyboard hides when return key entered
-        self.view.endEditing(true)
+        view.endEditing(true)
         return true
     }
     
@@ -118,29 +139,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func save(){                            //save the newly created meme
         let meme = Meme(topText: topTextfield.text!, bottomText: bottomTextfield.text!, image: imageView.image!, memedImage: generateMemedImage())
+        (UIApplication.shared.delegate as! AppDelegate).memes.append(meme)
     }
     
     func generateMemedImage() -> UIImage{
-        hideToolandNavbar()
+        configureBars(hidden: true)
         
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
-        showToolbar()
+        configureBars(hidden: false)
         
         return memedImage
     }
     
-    func hideToolandNavbar(){
-        self.topToolbar.isHidden = true
-        self.bottomToolbar.isHidden = true
-    }
-    
-    func showToolbar(){
-        self.topToolbar.isHidden = false
-        self.bottomToolbar.isHidden = false
+    func configureBars(hidden: Bool){
+        topToolbar.isHidden = hidden
+        bottomToolbar.isHidden = hidden
     }
     
     @IBAction func shareAction(_ sender: AnyObject) {                       //function of share button and saving the meme
@@ -156,41 +173,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     @IBAction func cancelAction(_ sender: AnyObject) {                      //function of cancel button
-        loadThisView()
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
-    func loadThisView(){
-        let memeTextAttributes = [
-            NSStrokeColorAttributeName : UIColor.black,
-            NSForegroundColorAttributeName : UIColor.white,
-            NSFontAttributeName : UIFont(name : "HelveticaNeue-CondensedBlack",size: 40)!,
-            NSStrokeWidthAttributeName : -3.0
-            ] as [String : Any]
-        
-        imageView.image = nil
-        
-        func attributeAssign(textfield : UITextField){
-            textfield.delegate = self
-            textfield.defaultTextAttributes = memeTextAttributes
-            textfield.textAlignment = .center
-        }
-        
-        attributeAssign(textfield: topTextfield)
-        attributeAssign(textfield: bottomTextfield)
-        
-        topTextfield.text = "TOP"
-        bottomTextfield.text = "BOTTOM"
-    }
-    
-    func imagePickerMethod(source: String){
+    func imagePickerMethod(source: UIImagePickerControllerSourceType){
          let imagePicker = UIImagePickerController()
         imagePicker.delegate=self
-        if sourceType == "Album"{
-            imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        }
-        if sourceType == "Camera"{
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
-        }
+        imagePicker.sourceType = source
         self.present(imagePicker, animated: true, completion: nil)
     }
 }
