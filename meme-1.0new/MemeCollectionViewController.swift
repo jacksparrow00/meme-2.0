@@ -19,17 +19,22 @@ class MemeCollectionViewController : UICollectionViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(MemeCollectionViewController.add))
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(MemeCollectionViewController.add))            //add button on right side of navigation controller
+        
+        let space:CGFloat = 3.0                                                 //resize cell according to device
+        let cellWidth = (self.view.frame.size.width-(2*space))/3.0
+        let cellHeight = (self.view.frame.size.height-(2*space))/3.0
+        
+        flowLayout.minimumLineSpacing = space
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        
+        self.navigationController?.navigationBar.isHidden = false               //due to a bug
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        flowLayout.collectionView?.reloadData()
+        flowLayout.collectionView?.reloadData()                             //refresh data
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -8,34 +8,28 @@
 
 import UIKit
 
-class MemeTableViewController: UITableViewController {
+class MemeTableViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     
-    @IBOutlet var generateTableView: UITableView!
-    
+    @IBOutlet weak var generateTableView: UITableView!
     var memes:[Meme]{
         return (UIApplication.shared.delegate as! AppDelegate).memes
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(MemeTableViewController.add))
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(MemeTableViewController.add))                 //add button on the right side on navigation controller
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        generateTableView.reloadData()
+        generateTableView.reloadData()              //refresh data
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.memes.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableView")
         let meme = self.memes[indexPath.row]
         cell?.textLabel?.text = meme.topText
@@ -46,7 +40,14 @@ class MemeTableViewController: UITableViewController {
         }
         return cell!
     }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var row = indexPath.row                             //adjust height of the cell
+        row = 150
+        return CGFloat(row)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailViewController = self.storyboard?.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
         detailViewController.memesdetail = self.memes[indexPath.row]
         self.navigationController?.pushViewController(detailViewController, animated: true)

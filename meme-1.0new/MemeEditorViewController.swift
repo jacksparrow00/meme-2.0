@@ -18,6 +18,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var imageView: UIImageView!
     var sourceType:UIImagePickerControllerSourceType!
+    var image: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +30,6 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             NSStrokeWidthAttributeName : -3.0
             ] as [String : Any]
         
-        imageView.image = nil
-        
         func attributeAssign(textfield : UITextField){
             textfield.delegate = self
             textfield.defaultTextAttributes = memeTextAttributes
@@ -40,10 +39,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         attributeAssign(textfield: topTextfield)
         attributeAssign(textfield: bottomTextfield)
         
+        imageView.image = image
+        
         topTextfield.text = "TOP"
         bottomTextfield.text = "BOTTOM"
         
-        self.navigationController?.navigationBar.isHidden = true
+        configureNavAndTabBars(hidden : true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,8 +75,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
             imageView.image = image
             dismiss(animated: true, completion: nil)
-            
-            
+            self.tabBarController?.tabBar.isHidden = true
         }
         else{
             let alertController = UIAlertController()
@@ -174,6 +174,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     @IBAction func cancelAction(_ sender: AnyObject) {                      //function of cancel button
         self.navigationController?.popToRootViewController(animated: true)
+        configureNavAndTabBars(hidden: false)
     }
     
     func imagePickerMethod(source: UIImagePickerControllerSourceType){
@@ -181,5 +182,10 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         imagePicker.delegate=self
         imagePicker.sourceType = source
         self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func configureNavAndTabBars(hidden: Bool){
+        self.navigationController?.navigationBar.isHidden = hidden
+        self.tabBarController?.tabBar.isHidden = hidden
     }
 }

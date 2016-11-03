@@ -16,7 +16,10 @@ class MemeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(MemeDetailViewController.edit))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(MemeDetailViewController.edit))              //add button on the right side of navigation controller
+        
+        self.tabBarController?.tabBar.isHidden = true                       //due to a bug
+        self.navigationController?.navigationBar.isHidden = false              //due to a bug
 
         // Do any additional setup after loading the view.
     }
@@ -28,7 +31,7 @@ class MemeDetailViewController: UIViewController {
     
     func edit(){
         let editorViewController = self.storyboard?.instantiateViewController(withIdentifier: "MemeEditorViewController") as! MemeEditorViewController
-        present(editorViewController, animated: true, completion: nil)
+        editorViewController.image = memesdetail.image
+        self.navigationController?.pushViewController(editorViewController, animated: true)
     }
-    
 }
