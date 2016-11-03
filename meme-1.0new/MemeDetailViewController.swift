@@ -32,6 +32,6 @@ class MemeDetailViewController: UIViewController {
     func edit(){
         let editorViewController = self.storyboard?.instantiateViewController(withIdentifier: "MemeEditorViewController") as! MemeEditorViewController
         editorViewController.image = memesdetail.image
-        self.navigationController?.pushViewController(editorViewController, animated: true)
+        self.navigationController?.present(editorViewController, animated: true, completion: nil)
     }
 }

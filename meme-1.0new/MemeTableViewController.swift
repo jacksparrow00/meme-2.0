@@ -20,6 +20,10 @@ class MemeTableViewController: UIViewController,UITableViewDataSource, UITableVi
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(MemeTableViewController.add))                 //add button on the right side on navigation controller
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         generateTableView.reloadData()              //refresh data
@@ -55,6 +59,6 @@ class MemeTableViewController: UIViewController,UITableViewDataSource, UITableVi
     
     func add(){
         let editorViewController = self.storyboard?.instantiateViewController(withIdentifier: "MemeEditorViewController") as! MemeEditorViewController
-        self.navigationController?.pushViewController(editorViewController, animated: true)
+        self.navigationController?.present(editorViewController, animated: true, completion: nil)
     }
 }

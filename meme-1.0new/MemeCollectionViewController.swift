@@ -25,11 +25,17 @@ class MemeCollectionViewController : UICollectionViewController{
         let cellWidth = (self.view.frame.size.width-(2*space))/3.0
         let cellHeight = (self.view.frame.size.height-(2*space))/3.0
         
-        flowLayout.minimumLineSpacing = space
+        flowLayout.minimumLineSpacing = 1.0
         flowLayout.minimumInteritemSpacing = space
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
         
-        self.navigationController?.navigationBar.isHidden = false               //due to a bug
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false               //due to a bug
+        tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -56,6 +62,6 @@ class MemeCollectionViewController : UICollectionViewController{
     
     func add(){
         let editorViewController = self.storyboard?.instantiateViewController(withIdentifier: "MemeEditorViewController") as! MemeEditorViewController
-        self.navigationController?.pushViewController(editorViewController, animated: true)
+        self.navigationController?.present(editorViewController, animated: true, completion: nil)
     }
 }

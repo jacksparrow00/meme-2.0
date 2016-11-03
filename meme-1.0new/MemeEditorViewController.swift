@@ -30,19 +30,17 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             NSStrokeWidthAttributeName : -3.0
             ] as [String : Any]
         
-        func attributeAssign(textfield : UITextField){
+        func attributeAssign(textfield : UITextField, text : String){
             textfield.delegate = self
             textfield.defaultTextAttributes = memeTextAttributes
             textfield.textAlignment = .center
+            textfield.text = text
         }
         
-        attributeAssign(textfield: topTextfield)
-        attributeAssign(textfield: bottomTextfield)
+        attributeAssign(textfield: topTextfield, text: "TOP")
+        attributeAssign(textfield: bottomTextfield, text: "BOTTOM")
         
         imageView.image = image
-        
-        topTextfield.text = "TOP"
-        bottomTextfield.text = "BOTTOM"
         
         configureNavAndTabBars(hidden : true)
     }
@@ -67,9 +65,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
    
     
     @IBAction func pickAnImageFromAlbum(_ sender: AnyObject) {                  //image picking from album
-       
-       sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePickerMethod(source: sourceType)
+
+        imagePickerMethod(source: .photoLibrary)
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {         //select image from album
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
@@ -89,8 +86,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     @IBAction func pickAnImageFromCamera(_ sender: AnyObject) {             //launch the camera and get a picture
-        sourceType = UIImagePickerControllerSourceType.camera
-        imagePickerMethod(source: sourceType)
+        
+        imagePickerMethod(source: .camera)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {               //removing "top" and "Bottom" when editing
@@ -145,7 +142,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func generateMemedImage() -> UIImage{
         configureBars(hidden: true)
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
+        UIGraphicsBeginImageContextWithOptions(self.view.frame.size, true, 0.0)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
@@ -173,7 +170,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         }
     }
     @IBAction func cancelAction(_ sender: AnyObject) {                      //function of cancel button
-        self.navigationController?.popToRootViewController(animated: true)
+        dismiss(animated: true, completion: nil)
         configureNavAndTabBars(hidden: false)
     }
     
