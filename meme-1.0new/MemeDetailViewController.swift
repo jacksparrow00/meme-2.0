@@ -18,8 +18,8 @@ class MemeDetailViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(MemeDetailViewController.edit))              //add button on the right side of navigation controller
         
-        self.tabBarController?.tabBar.isHidden = true                       //due to a bug
-        self.navigationController?.navigationBar.isHidden = false              //due to a bug
+       /* self.tabBarController?.tabBar.isHidden = true                       //due to a bug
+        self.navigationController?.navigationBar.isHidden = false              //due to a bug*/
 
         // Do any additional setup after loading the view.
     }
